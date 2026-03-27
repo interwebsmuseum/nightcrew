@@ -32,16 +32,11 @@ if (!TOKEN_MINTS.length) throw new Error('Missing TOKEN_MINTS')
 
 // Optional: map mint addresses to artifact/coin labels
 const TOKEN_LABELS = {
-  'CA1': '$IM',
-  'CA2': '$TALLY',
+  'CA1': 'Artifact #001 — First Count',
+  'CA2': 'Artifact #002',
 }
 
 const bot = new Telegraf(BOT_TOKEN)
-
-bot.use(async (ctx, next) => {
-  console.log('Incoming update:', JSON.stringify(ctx.update, null, 2))
-  return next()
-})
 
 // ------------------------
 // Telegram bot commands
@@ -61,7 +56,7 @@ bot.hears(/x|twitter/i, (ctx) => {
 })
 
 bot.hears(/artifact|drop/i, (ctx) => {
-  ctx.reply('Latest Artifact:\nARCHIVE #001 — First Count\n\nObserve the origin.')
+  ctx.reply('Latest Artifact:\nARCHIVE #001 — The First Count\n\nObserve the origin.')
 })
 
 bot.hears(/buy|how to buy/i, (ctx) => {
@@ -77,7 +72,7 @@ bot.command('x', (ctx) => {
 })
 
 bot.command('artifact', (ctx) => {
-  ctx.reply('ARCHIVE #001 — First Count')
+  ctx.reply('ARCHIVE #001 — The First Count')
 })
 
 // ------------------------
@@ -185,7 +180,7 @@ function extractBuyAlert(event) {
 // Health check
 // ------------------------
 app.get('/', (_req, res) => {
-  res.status(200).send('Interwebs Museum Night Crew is present.')
+  res.status(200).send('Interwebs Museum bot is online.')
 })
 
 // ------------------------
