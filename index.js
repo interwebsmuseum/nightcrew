@@ -14,8 +14,8 @@ const BOT_TOKEN = process.env.BOT_TOKEN
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID
 const HELIUS_API_KEY = process.env.HELIUS_API_KEY
 const HELIUS_AUTH_TOKEN = process.env.HELIUS_AUTH_TOKEN
-const CA = process.env.CA || 'PASTE_PRIMARY_CA_HERE'
-const X_LINK = process.env.X_LINK || 'PASTE_X_LINK_HERE'
+const CA = process.env.CA || '2DnBVgG1LX2Umh2LL4rpCc3fyKUr2JKhzMy7CQuppump'
+const X_LINK = process.env.X_LINK || 'https://x.com/InterwebsMuseum'
 
 // Comma-separated list from Railway:
 // TOKEN_MINTS=CA1,CA2,CA3
@@ -56,7 +56,7 @@ bot.hears(/x|twitter/i, (ctx) => {
 })
 
 bot.hears(/artifact|drop/i, (ctx) => {
-  ctx.reply('Latest Artifact:\nARCHIVE #001 — The First Count\n\nObserve the origin.')
+  ctx.reply('Latest Artifact:\nARCHIVE #001 — First Count\n\nObserve the origin.')
 })
 
 bot.hears(/buy|how to buy/i, (ctx) => {
@@ -72,7 +72,7 @@ bot.command('x', (ctx) => {
 })
 
 bot.command('artifact', (ctx) => {
-  ctx.reply('ARCHIVE #001 — The First Count')
+  ctx.reply('ARCHIVE #001 — First Count')
 })
 
 // ------------------------
@@ -180,7 +180,7 @@ function extractBuyAlert(event) {
 // Health check
 // ------------------------
 app.get('/', (_req, res) => {
-  res.status(200).send('Interwebs Museum bot is online.')
+  res.status(200).send('Interwebs Museum Night Crew is present.')
 })
 
 // ------------------------
