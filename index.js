@@ -38,6 +38,11 @@ const TOKEN_LABELS = {
 
 const bot = new Telegraf(BOT_TOKEN)
 
+bot.use(async (ctx, next) => {
+  console.log('Incoming update:', JSON.stringify(ctx.update, null, 2))
+  return next()
+})
+
 // ------------------------
 // Telegram bot commands
 // ------------------------
