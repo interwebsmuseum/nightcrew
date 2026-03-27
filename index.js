@@ -14,7 +14,7 @@ const BOT_TOKEN = process.env.BOT_TOKEN
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID
 const HELIUS_API_KEY = process.env.HELIUS_API_KEY
 const HELIUS_AUTH_TOKEN = process.env.HELIUS_AUTH_TOKEN
-const CA = process.env.CA || '2DnBVgG1LX2Umh2LL4rpCc3fyKUr2JKhzMy7CQuppump'
+const CA = process.env.CA || 'QELfFE7SsCH3kBycLbuQ7XsoHmG74XjhM9ou3KLM1XB'
 const X_LINK = process.env.X_LINK || 'https://x.com/InterwebsMuseum'
 
 // Comma-separated list from Railway:
@@ -187,6 +187,9 @@ app.get('/', (_req, res) => {
 // Secure Helius webhook endpoint
 // ------------------------
 app.post('/webhook/helius', async (req, res) => {
+  console.log('Webhook headers:', JSON.stringify(req.headers, null, 2))
+  console.log('Webhook body:', JSON.stringify(req.body, null, 2))
+
   try {
     const authHeader = req.headers.authorization || ''
     const bearer = authHeader.startsWith('Bearer ')
@@ -196,6 +199,7 @@ app.post('/webhook/helius', async (req, res) => {
     const queryToken = req.query.auth
 
     if (bearer !== HELIUS_AUTH_TOKEN && queryToken !== HELIUS_AUTH_TOKEN) {
+      console.log('Unauthorized webhook attempt')
       return res.status(401).json({ ok: false, error: 'Unauthorized' })
     }
 
@@ -225,11 +229,14 @@ app.post('/webhook/helius', async (req, res) => {
         lines.push(`https://solscan.io/tx/${buy.signature}`)
       }
 
-      lines.push('')
-      lines.push('Primary CA:')
-      lines.push(CA)
+      console.log('Sending Telegram alert...')
 
-      await sendTelegramMessage(lines.join('\n'))
+      try {
+        await sendTelegramMessage(lines.join('\n'))
+        console.log('Telegram alert sent successfully')
+      } catch (err) {
+        console.error('Telegram send failed:', err?.response?.data || err.message || err)
+      }
     }
 
     return res.status(200).json({ ok: true })
