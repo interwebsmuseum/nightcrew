@@ -2,10 +2,10 @@ import { Telegraf } from 'telegraf'
 import dotenv from 'dotenv'
 dotenv.config()
 
-const bot = new Telegraf(process.env.8735511720:AAG7AyfDABMayAUIuC4d-z3lek0iA9JcS_k)
+const bot = new Telegraf(process.env.BOT_TOKEN)
 
-const CA = process.env.$IM_2DnBVgG1LX2Umh2LL4rpCc3fyKUr2JKhzMy7CQuppump,$TALLY_8LovVhpuBTkdL5rYhPhHdsTVBSeVPs53NsDP7GUFpump
-const X_LINK = process.env.https://x.com/InterwebsMuseum
+const CA = process.env.CA
+const X_LINK = process.env.X_LINK
 
 bot.start((ctx) => {
   ctx.reply(`Welcome to the Interweb Museum.\n\nType "CA" or "X" to begin.`)
@@ -20,7 +20,7 @@ bot.hears(/x|twitter/i, (ctx) => {
 })
 
 bot.hears(/artifact|drop/i, (ctx) => {
-  ctx.reply(`Latest Artifact:\nARCHIVE #001 — The First Count\n\nObserve the origin.`)
+  ctx.reply(`Latest Artifact:\nARCHIVE #001 — First Count\n\nObserve the origin.`)
 })
 
 bot.launch()
