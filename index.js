@@ -32,9 +32,8 @@ if (!TOKEN_MINTS.length) throw new Error('Missing TOKEN_MINTS')
 
 // Optional: map mint addresses to artifact/coin labels
 const TOKEN_LABELS = {
-  'CA1': 'Artifact #001 — The First Count',
-  'CA2': 'Artifact #002',
-  'CA3': 'Artifact #003'
+  'CA1': '$IM',
+  'CA2': '$TALLY',
 }
 
 const bot = new Telegraf(BOT_TOKEN)
