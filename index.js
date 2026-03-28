@@ -21,13 +21,7 @@ const WATCHED_ADDRESSES = (process.env.WATCHED_ADDRESSES || '')
   .split(',')
   .map((m) => m.trim())
   .filter(Boolean)
-
 const TOKEN_MINTS = (process.env.TOKEN_MINTS || '')
-  .split(',')
-  .map((m) => m.trim())
-  .filter(Boolean)
-
-const WATCHED_ADDRESSES = (process.env.WATCHED_ADDRESSES || '')
   .split(',')
   .map((m) => m.trim())
   .filter(Boolean)
