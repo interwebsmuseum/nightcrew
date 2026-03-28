@@ -9,25 +9,30 @@ const app = express()
 app.use(express.json({ limit: '2mb' }))
 
 const PORT = process.env.PORT || 3000
-
+const PUBLIC_URL = process.env.PUBLIC_URL
+const webhookURL = `${PUBLIC_URL}/webhook/helius?auth=${encodeURIComponent(HELIUS_AUTH_TOKEN)}`
 const BOT_TOKEN = process.env.BOT_TOKEN
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID
 const HELIUS_API_KEY = process.env.HELIUS_API_KEY
 const HELIUS_AUTH_TOKEN = process.env.HELIUS_AUTH_TOKEN
-const CA = process.env.CA || 'QELfFE7SsCH3kBycLbuQ7XsoHmG74XjhM9ou3KLM1XB'
+const CA = process.env.CA || '2DnBVgG1LX2Umh2LL4rpCc3fyKUr2JKhzMy7CQuppump'
 const X_LINK = process.env.X_LINK || 'https://x.com/InterwebsMuseum'
 const WATCHED_ADDRESSES = (process.env.WATCHED_ADDRESSES || '')
   .split(',')
   .map((m) => m.trim())
   .filter(Boolean)
 
-// Comma-separated list from Railway:
-// TOKEN_MINTS=CA1,CA2,CA3
 const TOKEN_MINTS = (process.env.TOKEN_MINTS || '')
   .split(',')
   .map((m) => m.trim())
   .filter(Boolean)
 
+const WATCHED_ADDRESSES = (process.env.WATCHED_ADDRESSES || '')
+  .split(',')
+  .map((m) => m.trim())
+  .filter(Boolean)
+
+if (!WATCHED_ADDRESSES.length) throw new Error('Missing WATCHED_ADDRESSES')
 if (!BOT_TOKEN) throw new Error('Missing BOT_TOKEN')
 if (!TELEGRAM_CHAT_ID) throw new Error('Missing TELEGRAM_CHAT_ID')
 if (!HELIUS_API_KEY) throw new Error('Missing HELIUS_API_KEY')
@@ -70,7 +75,7 @@ bot.command('x', (ctx) => {
 })
 
 bot.command('artifact', (ctx) => {
-  ctx.reply('ARCHIVE #001 — The First Count')
+  ctx.reply('ARCHIVE #001 — First Count')
 })
 
 // ------------------------
