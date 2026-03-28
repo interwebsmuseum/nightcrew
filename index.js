@@ -269,7 +269,11 @@ app.post('/admin/create-helius-webhook', async (req, res) => {
       accountAddresses: TOKEN_MINTS,
       webhookType: 'enhanced'
     }
-
+    
+console.log('Registering webhook URL:', webhookURL)
+console.log('Registering accountAddresses:', TOKEN_MINTS)
+console.log('Registering body:', JSON.stringify(body, null, 2))
+    
     const response = await axios.post(
       `https://api.helius.xyz/v0/webhooks?api-key=${HELIUS_API_KEY}`,
       body,
