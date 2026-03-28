@@ -8,9 +8,7 @@ dotenv.config()
 const app = express()
 app.use(express.json({ limit: '2mb' }))
 
-const TOKEN_LABELS = {
-  '2DnBVgG1LX2Umh2LL4rpCc3fyKUr2JKhzMy7CQuppump'
-}
+const TOKEN_LABELS = '2DnBVgG1LX2Umh2LL4rpCc3fyKUr2JKhzMy7CQuppump'
 const PORT = process.env.PORT || 3000
 const BOT_TOKEN = process.env.BOT_TOKEN
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID
