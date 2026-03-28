@@ -262,7 +262,7 @@ app.post('/admin/create-helius-webhook', async (req, res) => {
 
 const body = {
   webhookURL,
-  transactionTypes: ['SWAP'],
+  transactionTypes: ['ANY'],
   accountAddresses: WATCHED_ADDRESSES,
   webhookType: 'enhanced',
   authHeader: `Bearer ${HELIUS_AUTH_TOKEN}`
