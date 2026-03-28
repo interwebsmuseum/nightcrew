@@ -8,6 +8,9 @@ dotenv.config()
 const app = express()
 app.use(express.json({ limit: '2mb' }))
 
+const TOKEN_LABELS = {
+  '2DnBVgG1LX2Umh2LL4rpCc3fyKUr2JKhzMy7CQuppump'
+}
 const PORT = process.env.PORT || 3000
 const BOT_TOKEN = process.env.BOT_TOKEN
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID
@@ -183,6 +186,10 @@ app.get('/', (_req, res) => {
 // ------------------------
 // Secure Helius webhook endpoint
 // ------------------------
+app.get('/webhook/helius', (_req, res) => {
+  res.status(200).send('Helius webhook endpoint is reachable.')
+})
+  
 app.post('/webhook/helius', async (req, res) => {
   console.log('Webhook headers:', JSON.stringify(req.headers, null, 2))
   console.log('Webhook body:', JSON.stringify(req.body, null, 2))
@@ -246,6 +253,10 @@ app.post('/webhook/helius', async (req, res) => {
 // ------------------------
 // Create Helius webhook
 // ------------------------
+app.get('/webhook/helius', (_req, res) => {
+  res.status(200).send('Helius webhook endpoint is reachable.')
+})
+  
 app.post('/admin/create-helius-webhook', async (req, res) => {
   try {
     const authHeader = req.headers.authorization || ''
@@ -257,8 +268,7 @@ app.post('/admin/create-helius-webhook', async (req, res) => {
       return res.status(401).json({ ok: false, error: 'Unauthorized' })
     }
 
-    const baseUrl = `${req.protocol}://${req.get('host')}`
-    const webhookURL = `${baseUrl}/webhook/helius?auth=${encodeURIComponent(HELIUS_AUTH_TOKEN)}`
+const webhookURL = `${PUBLIC_URL}/webhook/helius?auth=${encodeURIComponent(HELIUS_AUTH_TOKEN)}`
 
 const body = {
   webhookURL,
@@ -269,7 +279,7 @@ const body = {
 }
     
 console.log('Registering webhook URL:', webhookURL)
-console.log('Registering accountAddresses:', TOKEN_MINTS)
+console.log('Registering accountAddresses:', WATCHED_ADDRESSES)
 console.log('Registering body:', JSON.stringify(body, null, 2))
     
     const response = await axios.post(
@@ -357,6 +367,10 @@ app.listen(PORT, () => {
 })
 
 bot.launch()
+  .then(() => console.log('Telegram bot launched successfully'))
+  .catch((err) => {
+    console.error('Telegram bot failed to launch:', err?.response || err.message || err)
+  })
 
 process.once('SIGINT', () => bot.stop('SIGINT'))
 process.once('SIGTERM', () => bot.stop('SIGTERM'))
