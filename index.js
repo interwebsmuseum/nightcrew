@@ -9,8 +9,6 @@ const app = express()
 app.use(express.json({ limit: '2mb' }))
 
 const PORT = process.env.PORT || 3000
-const PUBLIC_URL = process.env.PUBLIC_URL
-const webhookURL = `${PUBLIC_URL}/webhook/helius?auth=${encodeURIComponent(HELIUS_AUTH_TOKEN)}`
 const BOT_TOKEN = process.env.BOT_TOKEN
 const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID
 const HELIUS_API_KEY = process.env.HELIUS_API_KEY
@@ -25,6 +23,8 @@ const TOKEN_MINTS = (process.env.TOKEN_MINTS || '')
   .split(',')
   .map((m) => m.trim())
   .filter(Boolean)
+const PUBLIC_URL = process.env.PUBLIC_URL
+const webhookURL = `${PUBLIC_URL}/webhook/helius?auth=${encodeURIComponent(HELIUS_AUTH_TOKEN)}`
 
 if (!WATCHED_ADDRESSES.length) throw new Error('Missing WATCHED_ADDRESSES')
 if (!BOT_TOKEN) throw new Error('Missing BOT_TOKEN')
