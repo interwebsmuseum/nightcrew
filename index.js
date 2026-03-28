@@ -296,6 +296,61 @@ console.log('Registering body:', JSON.stringify(body, null, 2))
   }
 })
 
+app.post('/admin/test-webhook', async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization || ''
+    const bearer = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : ''
+
+    if (bearer !== HELIUS_AUTH_TOKEN) {
+      return res.status(401).json({ ok: false, error: 'Unauthorized' })
+    }
+
+    const fakeEvent = {
+      signature: 'testsignature123',
+      tokenTransfers: [
+        {
+          mint: TOKEN_MINTS[0],
+          tokenAmount: 123456,
+          toUserAccount: 'TestBuyerWallet123456789'
+        }
+      ],
+      nativeTransfers: [
+        {
+          amount: 500000000
+        }
+      ]
+    }
+
+    const buy = extractBuyAlert(fakeEvent)
+    if (!buy) {
+      return res.status(400).json({ ok: false, error: 'Buy parsing failed' })
+    }
+
+    const tokenLabel = getTokenLabel(buy.mint)
+
+    const lines = []
+    lines.push('🟢 New Buy Detected')
+    lines.push('')
+    lines.push(`Artifact: ${tokenLabel}`)
+    lines.push(`Mint: ${shortenAddress(buy.mint)}`)
+    lines.push(`Buyer: ${shortenAddress(buy.buyer)}`)
+    lines.push(`Amount: ${formatNumber(buy.tokenAmount)} tokens`)
+    lines.push(`Spent: ${formatNumber(buy.solAmount)} SOL`)
+    lines.push('TX:')
+    lines.push(`https://solscan.io/tx/${buy.signature}`)
+
+    await sendTelegramMessage(lines.join('\n'))
+
+    return res.status(200).json({ ok: true, message: 'Test webhook sent to Telegram' })
+  } catch (error) {
+    console.error('Test webhook error:', error?.response?.data || error.message || error)
+    return res.status(500).json({
+      ok: false,
+      error: error?.response?.data || error.message || 'Failed'
+    })
+  }
+})
+
 // ------------------------
 // Start server
 // ------------------------
