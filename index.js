@@ -16,6 +16,10 @@ const HELIUS_API_KEY = process.env.HELIUS_API_KEY
 const HELIUS_AUTH_TOKEN = process.env.HELIUS_AUTH_TOKEN
 const CA = process.env.CA || 'QELfFE7SsCH3kBycLbuQ7XsoHmG74XjhM9ou3KLM1XB'
 const X_LINK = process.env.X_LINK || 'https://x.com/InterwebsMuseum'
+const WATCHED_ADDRESSES = (process.env.WATCHED_ADDRESSES || '')
+  .split(',')
+  .map((m) => m.trim())
+  .filter(Boolean)
 
 // Comma-separated list from Railway:
 // TOKEN_MINTS=CA1,CA2,CA3
@@ -29,12 +33,6 @@ if (!TELEGRAM_CHAT_ID) throw new Error('Missing TELEGRAM_CHAT_ID')
 if (!HELIUS_API_KEY) throw new Error('Missing HELIUS_API_KEY')
 if (!HELIUS_AUTH_TOKEN) throw new Error('Missing HELIUS_AUTH_TOKEN')
 if (!TOKEN_MINTS.length) throw new Error('Missing TOKEN_MINTS')
-
-// Optional: map mint addresses to artifact/coin labels
-const TOKEN_LABELS = {
-  'CA1': 'Artifact #001 — First Count',
-  'CA2': 'Artifact #002',
-}
 
 const bot = new Telegraf(BOT_TOKEN)
 
@@ -56,7 +54,7 @@ bot.hears(/x|twitter/i, (ctx) => {
 })
 
 bot.hears(/artifact|drop/i, (ctx) => {
-  ctx.reply('Latest Artifact:\nARCHIVE #001 — The First Count\n\nObserve the origin.')
+  ctx.reply('Latest Artifact:\nARCHIVE #001 — First Count\n\nObserve the origin.')
 })
 
 bot.hears(/buy|how to buy/i, (ctx) => {
@@ -263,12 +261,13 @@ app.post('/admin/create-helius-webhook', async (req, res) => {
     const baseUrl = `${req.protocol}://${req.get('host')}`
     const webhookURL = `${baseUrl}/webhook/helius?auth=${encodeURIComponent(HELIUS_AUTH_TOKEN)}`
 
-    const body = {
-      webhookURL,
-      transactionTypes: ['ANY'],
-      accountAddresses: TOKEN_MINTS,
-      webhookType: 'enhanced'
-    }
+const body = {
+  webhookURL,
+  transactionTypes: ['SWAP'],
+  accountAddresses: WATCHED_ADDRESSES,
+  webhookType: 'enhanced',
+  authHeader: `Bearer ${HELIUS_AUTH_TOKEN}`
+}
     
 console.log('Registering webhook URL:', webhookURL)
 console.log('Registering accountAddresses:', TOKEN_MINTS)
